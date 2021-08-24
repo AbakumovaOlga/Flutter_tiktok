@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/add_vid_screen.dart';
 import 'package:flutter_tiktok/tags_screen.dart';
 
 import 'main_screen.dart';
@@ -16,6 +17,7 @@ void main() async {
     routes: {
       '/':(context) =>HomeScreen(),
       '/tags':(context)  => TagsScreen(),
+      '/add_vid':(context)  => AddVid(),
     },
   ));
 }

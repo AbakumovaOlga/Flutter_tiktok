@@ -9,9 +9,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  String _teg='';
-  String _link='';
-
 
   @override
   void initState() {
@@ -23,24 +20,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-          title: Text('Tik-tok videos'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-                onPressed: (){
-                 // Navigator.pop(context);
-                  Navigator.pushNamed(context, '/tags');
+        title: Text('Tik-tok videos'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                // Navigator.pop(context);
+                Navigator.pushNamed(context, '/tags');
               },
-                icon: Icon(Icons.post_add))
-          ],
+              icon: Icon(Icons.post_add))
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Videos').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-          if(!snapshot.hasData) return Text('No_data');
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return Text('No_data');
           return ListView.builder(
               itemCount: snapshot.data!.docs.length,
-              itemBuilder: (BuildContext context, int index){
+              itemBuilder: (BuildContext context, int index) {
                 return Dismissible(
                   key: Key(snapshot.data!.docs[index].id),
                   child: Card(
@@ -49,68 +46,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: IconButton(
                         icon: Icon(
                           Icons.delete,
-                          color: Colors.blue,),
+                          color: Colors.blue,
+                        ),
                         onPressed: () {
-                          FirebaseFirestore.instance.collection('Videos').doc(snapshot.data!.docs[index].id).delete();
+                          FirebaseFirestore.instance
+                              .collection('Videos')
+                              .doc(snapshot.data!.docs[index].id)
+                              .delete();
                         },
-                      ) ,
+                      ),
                     ),
                   ),
-                  onDismissed: (direction){
-                    FirebaseFirestore.instance.collection('Videos').doc(snapshot.data!.docs[index].id).delete();
+                  onDismissed: (direction) {
+                    FirebaseFirestore.instance
+                        .collection('Videos')
+                        .doc(snapshot.data!.docs[index].id)
+                        .delete();
                   },
                 );
               });
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context){
-              return StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('Tags').snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-                    return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext context, int index){
-                          return AlertDialog(
-                            title: Text('Add'),
-                            content:Column(
-                                children:[
-                                  TextField(
-                                    onChanged: (String value){
-                                      _link=value;
-                                    },
-                                  ),
-                                  DropdownButton<String>(
-                                    items:snapshot.data!.docs.{
-                          return DropdownMenuItem<String>(
-                          value: value,
-                          child: new Text(value),
-                          );
-                          }).toList(),
-                                    onChanged: (_) {},
-                                  )
-                                ]),
-                            actions: [
-                              ElevatedButton(onPressed: (){
-                                FirebaseFirestore.instance.collection('Videos').add({'teg':_teg, 'link':_link});
-                                Navigator.of(context).pop();
-                              }, child: Text('Add'))
-                            ],
-                          );
-                        }
-                        );
-                  });
-            });
-        },
-        child: Icon(
-          Icons.add_box,
-        ),
-      ),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add_box), onPressed: () {
+            Navigator.pushNamed(context, '/add_vid');
+          }),
     );
   }
-
-
 }
-
