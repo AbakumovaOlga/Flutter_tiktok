@@ -8,8 +8,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   void initState() {
     super.initState();
@@ -67,8 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
               });
         },
       ),
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add_box), onPressed: () {
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add_box),
+          onPressed: () {
             Navigator.pushNamed(context, '/add_vid');
           }),
     );

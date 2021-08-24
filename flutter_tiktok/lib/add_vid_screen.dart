@@ -9,10 +9,8 @@ class AddVid extends StatefulWidget {
 }
 
 class _AddVidState extends State<AddVid> {
-
   String _teg = 'One';
   String _link = '';
-
 
   @override
   Widget build(BuildContext context) {
